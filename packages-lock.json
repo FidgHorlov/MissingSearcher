@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.tskt.missingelements": {
+    "com.tsukat.missingelements": {
       "version": "file:MissingElements",
       "depth": 0,
       "source": "embedded",

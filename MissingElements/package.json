@@ -1,5 +1,5 @@
 {
-  "name": "com.tskt.missingelements",
+  "name": "com.tsukat.missingelements",
   "version": "0.0.1",
   "displayName": "[tskt] Missing Elements",
   "description": "The tool will find broken elements in your project. Such as: Game object with missing scripts or missing prefabs, meshes with missing materials.",
