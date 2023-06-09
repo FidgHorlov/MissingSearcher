@@ -1,5 +1,5 @@
 {
-    "name": "Tsukat.MissingElements.Editor",
+    "name": "com.tsukat.missingelements",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [
