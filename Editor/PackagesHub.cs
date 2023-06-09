@@ -5,6 +5,9 @@
 
 #endregion
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
@@ -22,20 +25,21 @@ namespace TsukatTool.Editor
 
 #endregion
 
-        private const string AssetUsageDetectorName = "com.yasirkula.assetusagedetector";
+        private const string AssetUsageDetectorPackagePath = "https://github.com/yasirkula/UnityAssetUsageDetector.git";
         private const string MissingElementPackagePath = "https://github.com/FidgHorlov/SeparateTools.git#missingElements";
 
         private const string PackageInstalledMsg = "Package installed!";
+        private const string PackageAlreadyInstalledMsg = "is already installed!";
 
-        private static ListRequest _request;
-        private static string _currentPackageName;
+        private static ListRequest _installedPackages;
+        private static AddRequest _newPackage;
 
         [MenuItem(AssetUsageDetectorMenuPath, false, 10000)]
         private static void AddUsageDetector()
         {
-            AddPackage(AssetUsageDetectorName);
+            AddPackage(AssetUsageDetectorPackagePath);
         }
-        
+
         [MenuItem(MissingElementMenuPath, false)]
         private static void AddMissingElement()
         {
@@ -44,31 +48,49 @@ namespace TsukatTool.Editor
 
         private static void AddPackage(string path)
         {
-            _request = Client.List(offlineMode: false);
+            InitInstalledPackages();
+            _newPackage = Client.Add(path);
             EditorApplication.update += Progress;
-            _currentPackageName = path;
+        }
+        
+        private static async void InitInstalledPackages()
+        {
+            ListRequest pack = Client.List(offlineMode: false);
+            while (!pack.IsCompleted)
+            {
+                await Task.Yield();
+            }
+
+            _installedPackages = pack;
         }
 
         private static void Progress()
         {
-            if (!_request.IsCompleted)
+            if (!_newPackage.IsCompleted)
             {
                 return;
             }
 
-            switch (_request.Status)
+            switch (_newPackage.Status)
             {
                 case StatusCode.Success:
+                {
                     if (IsPackageAlreadyInstalled())
                     {
                         return;
                     }
-
                     EditorApplication.update += AddPackageProgress;
                     break;
+                }
                 case StatusCode.Failure:
-                    Debug.LogError(_request.Error.message);
+                {
+                    Debug.LogError(_newPackage.Error.message);
                     break;
+                }
+                case StatusCode.InProgress:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             EditorApplication.update -= Progress;
@@ -76,35 +98,30 @@ namespace TsukatTool.Editor
 
         private static bool IsPackageAlreadyInstalled()
         {
-            foreach (PackageInfo packageInfo in _request.Result)
+            PackageInfo foundPackageInfo = _installedPackages.Result.FirstOrDefault(package => package.name.Equals(_newPackage.Result.name));
+            if (foundPackageInfo != null)
             {
-                if (!packageInfo.name.Equals(_currentPackageName))
-                {
-                    continue;
-                }
-
-                Debug.Log($"<b>{_currentPackageName}</b> is already Installed!");
-                EditorApplication.update -= Progress;
-                return true;
+                Debug.Log($"<b>{_newPackage.Result.name}</b> {PackageAlreadyInstalledMsg}");
             }
-
-            return false;
+            
+            EditorApplication.update -= Progress;
+            return foundPackageInfo != null;
         }
 
         private static void AddPackageProgress()
         {
-            if (!_request.IsCompleted)
+            if (!_newPackage.IsCompleted)
             {
                 return;
             }
 
-            switch (_request.Status)
+            switch (_newPackage.Status)
             {
                 case StatusCode.Success:
                     Debug.Log(PackageInstalledMsg);
                     break;
                 case StatusCode.Failure:
-                    Debug.LogError(_request.Error.message);
+                    Debug.LogError(_newPackage.Error.message);
                     break;
             }
 
