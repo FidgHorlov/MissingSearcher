@@ -1,0 +1,18 @@
+{
+  "name": "com.tsukat.hub",
+  "displayName": "[tskt] Tsukat Hub",
+  "version": "1.0.0",
+  "description": "Tsukat Hub - gives you easy access to our custom packages and to the other useful packages.",
+  "keywords": [
+    "Tsukat",
+    "Custom Packages",
+    "Hub"
+  ],
+  "author": {
+    "name": "TSUKAT",
+    "email": "tsukatdev@tsukat.com",
+    "url": "https://www.tsukat.com"
+  },
+  "homepage": "https://tsukat.com",
+  "documentationUrl": "https://tsukat.com"
+}
