@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using UnityEditor;
 
 namespace TsukatTool.Editor
 {
@@ -9,25 +11,20 @@ namespace TsukatTool.Editor
         SceneLoaderTemplate,
         MenuItemTemplate
     }
-    
+
     internal static class FileManagerPath
     {
         public const string SceneLoaderTargetPath = "Assets/Tsukat/MultiTool/Editor/CustomSceneLoader.cs";
-        
-        private const string MultiToolSettingsPath = "Settings/TargetPlatformSettings.settings";
-        private const string ScenesSettings = "Settings/ScenesSettings.settings";
 
-        private const string SceneLoaderTemplatePath = "SceneLoader/SceneLoaderTemplate";
-        private const string MenuItemTemplatePath = "SceneLoader/MenuItemTemplate";
+        private const string MultiToolSettingsPath = "/Settings/TargetPlatformSettings.settings";
+        private const string ScenesSettings = "/Settings/ScenesSettings.settings";
 
-        private const string ReleasedFolderPath = "Packages/tsukat.scene-parameters/Editor";
-        private const string WorkingFolderPath = "Assets/Editor/";
-        
-        private static bool _isRelease = true; //todo: set TRUE when it should be used as Package
+        private const string SceneLoaderTemplatePath = "/SceneLoader/SceneLoaderTemplate";
+        private const string MenuItemTemplatePath = "/SceneLoader/MenuItemTemplate";
 
         internal static string GetPath(PathType pathType)
         {
-            string path = _isRelease ? ReleasedFolderPath : WorkingFolderPath;
+            string path = Path.GetDirectoryName(GetFilePath());
             
             switch (pathType)
             {
@@ -51,11 +48,18 @@ namespace TsukatTool.Editor
                     path += MenuItemTemplatePath;
                     break;
                 }
-                
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(pathType), pathType, null);
             }
+
             return path;
+        }
+
+        private static string GetFilePath()
+        {
+            string[] fileGui = AssetDatabase.FindAssets($"t:Script {nameof(FileManagerPath)}");
+            return AssetDatabase.GUIDToAssetPath(fileGui[0]);
         }
     }
 }
