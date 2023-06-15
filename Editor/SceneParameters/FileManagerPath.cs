@@ -20,7 +20,7 @@ namespace TsukatTool.Editor
         private const string SceneLoaderTemplatePath = "SceneLoader/SceneLoaderTemplate";
         private const string MenuItemTemplatePath = "SceneLoader/MenuItemTemplate";
 
-        private const string ReleasedFolderPath = "Packages/com.tsukat.multitool/Editor";
+        private const string ReleasedFolderPath = "Packages/tsukat.scene-parameters/Editor";
         private const string WorkingFolderPath = "Assets/Editor/";
         
         private static bool _isRelease = true; //todo: set TRUE when it should be used as Package
