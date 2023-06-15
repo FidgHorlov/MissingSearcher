@@ -23,7 +23,7 @@ namespace TsukatTool.Editor
         private const string ReleasedFolderPath = "Packages/com.tsukat.multitool/Editor";
         private const string WorkingFolderPath = "Assets/Editor/";
         
-        private static bool _isRelease = false; //todo: set TRUE when it should be used as Package
+        private static bool _isRelease = true; //todo: set TRUE when it should be used as Package
 
         internal static string GetPath(PathType pathType)
         {
