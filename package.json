@@ -1,9 +1,9 @@
 {
-  "name": "com.tsukat.*YourName*",
+  "name": "com.tsukat.scene-parameters",
   "version": "0.0.1",
-  "displayName": "[tskt] *YourName*",
-  "description": "DescriptionDescriptionDescriptionDescription",
-  "documentationUrl": "https://github.com/FidgHorlov/TsukatTool/wiki/Find...",
+  "displayName": "[tskt] Scene Parameters",
+  "description": "SceneParameters - give you opportunity to add scenes to the build.\r\nAlso, you will have possibility to open scene via menu bar.",
+  "documentationUrl": "https://github.com/FidgHorlov/TsukatTool/wiki/Custom-Scene-Manager.",
   "changelogUrl": "https://github.com/FidgHorlov/TsukatTool/releases",
   "licensesUrl": "https://github.com/FidgHorlov/TsukatTool/blob/main/LICENCE.md",
   "keywords": [
