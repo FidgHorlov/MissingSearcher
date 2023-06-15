@@ -41,7 +41,7 @@ namespace TsukatTool.Editor.SceneParameters
             if (HasOpenInstances<SceneManagerWindow>())
             {
                 FocusWindowIfItsOpen<SceneManagerWindow>();
-                return;
+                //return;
             }
             
             EditorWindow window = GetWindow<SceneManagerWindow>();

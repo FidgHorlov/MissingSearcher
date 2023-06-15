@@ -24,7 +24,7 @@ namespace TsukatTool.Editor
 
         internal static string GetPath(PathType pathType)
         {
-            string path = Path.GetDirectoryName(GetFilePath());
+            string path = GetFileFolder();
             
             switch (pathType)
             {
@@ -56,10 +56,11 @@ namespace TsukatTool.Editor
             return path;
         }
 
-        private static string GetFilePath()
+        private static string GetFileFolder()
         {
             string[] fileGui = AssetDatabase.FindAssets($"t:Script {nameof(FileManagerPath)}");
-            return AssetDatabase.GUIDToAssetPath(fileGui[0]);
+            string path = AssetDatabase.GUIDToAssetPath(fileGui[0]);
+            return Path.GetDirectoryName(path);
         }
     }
 }
