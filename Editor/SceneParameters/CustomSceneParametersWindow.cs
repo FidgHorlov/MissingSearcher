@@ -38,13 +38,13 @@ namespace TsukatTool.Editor.SceneParameters
         [MenuItem(SceneManagerPath, priority = -1000)]
         public static void OpenWindow()
         {
-            if (HasOpenInstances<SceneManagerWindow>())
+            EditorWindow window = GetWindow<SceneManagerWindow>();
+            if (focusedWindow.Equals(window))
             {
                 FocusWindowIfItsOpen<SceneManagerWindow>();
-                //return;
+                return;
             }
             
-            EditorWindow window = GetWindow<SceneManagerWindow>();
             window.titleContent = new GUIContent(SceneManagerWindowName);
             window.minSize = new Vector2(WindowSizeMinX, WindowSizeMinY);
             window.maxSize = new Vector2(WindowSizeMaxX, WindowSizeMaxY);
@@ -54,13 +54,13 @@ namespace TsukatTool.Editor.SceneParameters
         [MenuItem(PrepareBuildPath, priority = -910)]
         public static void OpenPrepareBuildWindow()
         {
-            if (HasOpenInstances<PrepareBuildWindow>())
+            EditorWindow window = GetWindow<PrepareBuildWindow>();
+            if (focusedWindow.Equals(window))
             {
                 FocusWindowIfItsOpen<PrepareBuildWindow>();
                 return;
             }
-            
-            EditorWindow window = GetWindow<PrepareBuildWindow>();
+
             window.titleContent = new GUIContent(PrepareBuildWindowName);
             window.minSize = new Vector2(PrepareBuildWindowSizeMinX, PrepareBuildWindowSizeYMin);
             window.maxSize = new Vector2(PrepareBuildWindowSizeMaxX, PrepareBuildWindowSizeYMax);
@@ -71,13 +71,13 @@ namespace TsukatTool.Editor.SceneParameters
         [MenuItem(SceneManagerSettingsPath, priority = -909)]
         public static void OpenSettingsWindow()
         {
-            if (HasOpenInstances<SettingsCustomSceneParametersWindow>())
+            EditorWindow window = GetWindow<SettingsCustomSceneParametersWindow>();
+            if (focusedWindow.Equals(window))
             {
                 FocusWindowIfItsOpen<SettingsCustomSceneParametersWindow>();
                 return;
             }
             
-            EditorWindow window = GetWindow<SettingsCustomSceneParametersWindow>();
             window.titleContent = new GUIContent(SettingsWindowName);
             window.minSize = new Vector2(WindowSizeMinX, SettingsWindowSizeYMin);
             window.maxSize = new Vector2(WindowSizeMaxX, SettingsWindowSizeYMax);
