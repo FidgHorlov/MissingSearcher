@@ -7,8 +7,11 @@
   "changelogUrl": "https://github.com/FidgHorlov/TsukatTool/releases",
   "licensesUrl": "https://github.com/FidgHorlov/TsukatTool/blob/main/LICENCE.md",
   "keywords": [
-    "keyword1",
-    "keyword2"
+    "Scene manager",
+    "Scene parameters",
+	"Build settings",
+	"Additional scene menu",
+	"Scenes in menubar"
   ],
   "author": {
     "name": "Tsukat",
