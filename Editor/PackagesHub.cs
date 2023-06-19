@@ -22,11 +22,13 @@ namespace TsukatTool.Editor
 
         private const string AssetUsageDetectorMenuPath = "Tsukat/Add.../Asset Usage Detector";
         private const string MissingElementMenuPath = "Tsukat/Add.../Missing Elements";
+        private const string SceneParametersMenuPath = "Tsukat/Add.../Scene Parameters";
 
 #endregion
 
         private const string AssetUsageDetectorPackagePath = "https://github.com/yasirkula/UnityAssetUsageDetector.git";
         private const string MissingElementPackagePath = "https://github.com/FidgHorlov/SeparateTools.git#missingElements";
+        private const string SceneParametersPackagePath = "https://github.com/FidgHorlov/SeparateTools.git#sceneParameters";
 
         private const string PackageInstalledMsg = "Package installed!";
         private const string PackageAlreadyInstalledMsg = "is already installed!";
@@ -44,6 +46,12 @@ namespace TsukatTool.Editor
         private static void AddMissingElement()
         {
             AddPackage(MissingElementPackagePath);
+        }
+        
+        [MenuItem(SceneParametersMenuPath, false)]
+        private static void AddSceneParameters()
+        {
+            AddPackage(SceneParametersPackagePath);
         }
 
         private static void AddPackage(string path)
