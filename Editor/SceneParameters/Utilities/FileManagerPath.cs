@@ -57,12 +57,6 @@ namespace TsukatTool.Editor.SceneParameters.Utilities
             return path;
         }
 
-        [MenuItem("Tsukat/Check file path", false, 10000)]
-        private static void AddUsageDetector()
-        {
-            Debug.Log($"Path: {GetFileFolder()}");
-        }
-
         private static string GetFileFolder()
         {
             string[] fileGui = AssetDatabase.FindAssets($"t:Script {nameof(FileManagerPath)}");
