@@ -1,21 +1,14 @@
-﻿#region Info
-
-// Tsukat tool - by Horlov Andrii (andreygorlovv@gmail.com)
-// Tsukat -> https://tsukat.com/
-
-#endregion
-
-using System;
+﻿using System;
 using UnityEngine.SceneManagement;
 
-namespace TsukatTool.Editor.SceneParameters
+namespace TsukatTool.Editor.SceneParameters.Models
 {
     [Serializable]
     public class ScenesSettings
     {
         public SceneData[] ScenesData;
     }
-    
+
     [Serializable]
     public class SceneData
     {

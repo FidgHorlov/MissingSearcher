@@ -8,12 +8,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TsukatTool.Editor.SceneParameters.Models;
+using TsukatTool.Editor.SceneParameters.Utilities;
 using UnityEditor;
 using UnityEngine;
 
 namespace TsukatTool.Editor.SceneParameters
 {
-    public class SettingsCustomSceneParametersWindow : EditorWindow, IHasCustomMenu
+    public class SceneParametersSettingsWindow : EditorWindow, IHasCustomMenu
     {
         private const string ButtonName = "Apply settings";
         private const string Header = "Select all build platform you will use";
@@ -66,15 +68,19 @@ namespace TsukatTool.Editor.SceneParameters
             GUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
 
-            if (GUILayout.Button(ButtonName))
+            if (!GUILayout.Button(ButtonName))
             {
-                _selectedBuildTargets = new TargetPlatformSettings();
-                _selectedBuildTargets.BuildTargets = _buildTargets.FindAll(t => t.IsSelected).ToArray();
-
-                FileManager.ReWriteTargetPlatforms(_selectedBuildTargets);
-                EditorPrefs.SetBool(SettingChangedPrefsName, true);
-                FocusWindowIfItsOpen<SceneManagerWindow>();
+                return;
             }
+
+            _selectedBuildTargets = new TargetPlatformSettings
+            {
+                BuildTargets = _buildTargets.FindAll(t => t.IsSelected).ToArray()
+            };
+
+            FileManager.ReWriteTargetPlatforms(_selectedBuildTargets);
+            EditorPrefs.SetBool(SettingChangedPrefsName, true);
+            FocusWindowIfItsOpen<SceneParametersMainWindow>();
         }
 
         void IHasCustomMenu.AddItemsToMenu(GenericMenu menu)
@@ -93,7 +99,12 @@ namespace TsukatTool.Editor.SceneParameters
 
             foreach (BuildTarget build in Enum.GetValues(typeof(BuildTarget)))
             {
-                CustomBuildTarget customBuildTarget = new CustomBuildTarget {Name = build.ToString(), IsSelected = false};
+                CustomBuildTarget customBuildTarget = new CustomBuildTarget
+                {
+                    Name = build.ToString(), 
+                    IsSelected = false,
+                    ScenePath = string.Empty
+                };
                 if (IsBuildTargetSupported(build))
                 {
                     _buildTargets.Add(customBuildTarget);

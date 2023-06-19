@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 
-namespace TsukatTool.Editor
+namespace TsukatTool.Editor.SceneParameters.Utilities
 {
     internal enum PathType
     {
@@ -25,7 +26,7 @@ namespace TsukatTool.Editor
         internal static string GetPath(PathType pathType)
         {
             string path = GetFileFolder();
-            
+
             switch (pathType)
             {
                 case PathType.Settings:
@@ -56,10 +57,17 @@ namespace TsukatTool.Editor
             return path;
         }
 
+        [MenuItem("Tsukat/Check file path", false, 10000)]
+        private static void AddUsageDetector()
+        {
+            Debug.Log($"Path: {GetFileFolder()}");
+        }
+
         private static string GetFileFolder()
         {
             string[] fileGui = AssetDatabase.FindAssets($"t:Script {nameof(FileManagerPath)}");
             string path = AssetDatabase.GUIDToAssetPath(fileGui[0]);
+            path = Directory.GetParent(path)?.ToString();
             return Path.GetDirectoryName(path);
         }
     }

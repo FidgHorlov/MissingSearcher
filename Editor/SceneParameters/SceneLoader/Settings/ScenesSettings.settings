@@ -2,27 +2,17 @@
     "ScenesData": [
         {
             "Scene": {
-                "m_Handle": -37304
+                "m_Handle": -29776
             },
             "Name": "New Scene",
             "Path": "Assets/Scenes/New Scene.unity",
-            "IsBuildAdded": false,
-            "IsCustomSceneLoader": true,
+            "IsBuildAdded": true,
+            "IsCustomSceneLoader": false,
             "TargetPlatformSettings": {
                 "BuildTargets": [
                     {
                         "ScenePath": "Assets/Scenes/New Scene.unity",
-                        "Name": "StandaloneWindows",
-                        "IsSelected": true
-                    },
-                    {
-                        "ScenePath": "Assets/Scenes/New Scene.unity",
                         "Name": "Android",
-                        "IsSelected": false
-                    },
-                    {
-                        "ScenePath": "Assets/Scenes/New Scene.unity",
-                        "Name": "StandaloneWindows64",
                         "IsSelected": false
                     }
                 ]
@@ -31,7 +21,7 @@
         },
         {
             "Scene": {
-                "m_Handle": -37306
+                "m_Handle": -29778
             },
             "Name": "Not this one",
             "Path": "Assets/Scenes/Not this one.unity",
@@ -41,17 +31,7 @@
                 "BuildTargets": [
                     {
                         "ScenePath": "Assets/Scenes/Not this one.unity",
-                        "Name": "StandaloneWindows",
-                        "IsSelected": true
-                    },
-                    {
-                        "ScenePath": "Assets/Scenes/Not this one.unity",
                         "Name": "Android",
-                        "IsSelected": true
-                    },
-                    {
-                        "ScenePath": "Assets/Scenes/Not this one.unity",
-                        "Name": "StandaloneWindows64",
                         "IsSelected": true
                     }
                 ]
@@ -70,18 +50,8 @@
                 "BuildTargets": [
                     {
                         "ScenePath": "Assets/Scenes/SampleScene.unity",
-                        "Name": "StandaloneWindows",
-                        "IsSelected": false
-                    },
-                    {
-                        "ScenePath": "Assets/Scenes/SampleScene.unity",
                         "Name": "Android",
                         "IsSelected": false
-                    },
-                    {
-                        "ScenePath": "Assets/Scenes/SampleScene.unity",
-                        "Name": "StandaloneWindows64",
-                        "IsSelected": true
                     }
                 ]
             },

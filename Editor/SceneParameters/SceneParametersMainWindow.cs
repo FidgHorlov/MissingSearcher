@@ -8,15 +8,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TsukatTool.Editor.SceneParameters.Models;
+using TsukatTool.Editor.SceneParameters.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace TsukatTool.Editor.SceneParameters
 {
-    public class SceneManagerWindow : EditorWindow
+    public class SceneParametersMainWindow : EditorWindow
     {
-        private const string ScenesHeader = "Here you can work with scenes";
+        private const string ScenesHeader = "Here you can select which scenes you want to see on the Menu tabs.\r\nAlso, if you have to build your project for differents platform you could manage it here.";
 
         private const string ApplySettingsButtonName = "Apply";
         private const string OpenSettingsButtonName = "Settings";
@@ -74,7 +76,7 @@ namespace TsukatTool.Editor.SceneParameters
 
         private void SceneUpdate()
         {
-            EditorGUILayout.LabelField(ScenesHeader);
+            EditorGUILayout.LabelField(ScenesHeader, EditorStyles.wordWrappedLabel);
             if (!_wasDictionaryInit)
             {
                 InitSettings();
@@ -85,7 +87,7 @@ namespace TsukatTool.Editor.SceneParameters
 
             EditorGUILayout.BeginHorizontal(EditorStyles.inspectorFullWidthMargins);
             CreateButton(ApplySettingsButtonName, AddAllScenesToBuildWindow);
-            CreateButton(OpenSettingsButtonName, CustomSceneParametersWindow.OpenSettingsWindow);
+            CreateButton(OpenSettingsButtonName, SceneParametersRunner.OpenSettingsWindow);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Separator();
         }
@@ -123,6 +125,7 @@ namespace TsukatTool.Editor.SceneParameters
                 }
 
                 scene.IsBuildTargetSelected = EditorGUILayout.BeginFoldoutHeaderGroup(scene.IsBuildTargetSelected, TargetPlatformHeader);
+
                 if (scene.IsBuildTargetSelected)
                 {
                     TargetBuildSelection(scene);
@@ -134,13 +137,12 @@ namespace TsukatTool.Editor.SceneParameters
             GUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
         }
-        
 
-        private static void TargetBuildSelection(SceneData sceneData)
+
+        private void TargetBuildSelection(SceneData sceneData)
         {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            
-            foreach (CustomBuildTarget buildTarget in sceneData.TargetPlatformSettings.BuildTargets)
+            foreach (CustomBuildTarget buildTarget in _targetPlatformSettings.BuildTargets)
             {
                 if (buildTarget.Name.Equals(BuildTarget.NoTarget.ToString()))
                 {
@@ -148,12 +150,39 @@ namespace TsukatTool.Editor.SceneParameters
                     continue;
                 }
 
-                buildTarget.IsSelected = EditorGUILayout.ToggleLeft(buildTarget.Name, buildTarget.IsSelected);
+                if (!buildTarget.IsSelected)
+                {
+                    Debug.Log($"[{sceneData.Name}]. Build target {buildTarget.Name} not selected.");
+                    continue;
+                }
+                
+                // todo: 
+                // probably we shouldn't delete from scene settings name of build. 
+                // here should be unique object of the scene settings
+                // with isSelected == false (if it's not selected)
+                CustomBuildTarget selectedTarget = GetBuildTarget(sceneData, buildTarget.Name);
+                if (selectedTarget == null)
+                {
+                    continue;
+                }
+
+                if (!selectedTarget.ScenePath.Equals(sceneData.Path) && !string.IsNullOrEmpty(selectedTarget.ScenePath))
+                {
+                    Debug.Log($"[{sceneData.Name}]. Scene path not equal ({sceneData.Path} and {selectedTarget.ScenePath})  Build target - {selectedTarget.Name}");
+                    continue;
+                }
+
+                selectedTarget.IsSelected = EditorGUILayout.ToggleLeft(selectedTarget.Name, selectedTarget.IsSelected);
             }
 
             EditorGUILayout.EndVertical();
         }
-        
+
+        private CustomBuildTarget GetBuildTarget(SceneData sceneData, string settingName)
+        {
+            return sceneData.TargetPlatformSettings.BuildTargets.FirstOrDefault(customBuildTarget => customBuildTarget.Name.Equals(settingName));
+        }
+
         private void InitSettings()
         {
             _targetPlatformSettings = FileManager.LoadTargetPlatforms();
@@ -162,20 +191,23 @@ namespace TsukatTool.Editor.SceneParameters
             if (_targetPlatformSettings == null)
             {
                 _targetPlatformSettings = new TargetPlatformSettings {BuildTargets = new CustomBuildTarget[1]};
-                CustomBuildTarget customBuildTarget = new CustomBuildTarget {Name = BuildTarget.NoTarget.ToString()};
-                _targetPlatformSettings.BuildTargets = new[] {customBuildTarget};
+                CustomBuildTarget customBuildTarget = new CustomBuildTarget
+                {
+                    Name = BuildTarget.NoTarget.ToString(),
+                    ScenePath = string.Empty,
+                    IsSelected = false
+                };
+                _targetPlatformSettings.BuildTargets = new[]
+                {
+                    customBuildTarget
+                };
             }
 
             List<SceneData> sceneDataList = new List<SceneData>();
+            bool isBuildSettingsWithoutPath = _scenesSettings == null || _scenesSettings.ScenesData.Length == 0;
             foreach (Scene scene in ScenesGetter.OpenSceneOneByOne())
             {
-                SceneData sceneData = _scenesSettings != null ? GetSceneDataIfExist(scene) : CreateNewSceneData(scene);
-
-                if (_targetPlatformSettings != null)
-                {
-                    sceneData.TargetPlatformSettings.BuildTargets = GetNewBuildTargets(sceneData);
-                }
-
+                SceneData sceneData = isBuildSettingsWithoutPath ? CreateNewSceneData(scene) : GetSceneDataIfExist(scene);
                 sceneData.IsBuildAdded = SceneUtility.GetBuildIndexByScenePath(scene.path) > -1;
                 sceneData.IsCustomSceneLoader = SceneLoader.SceneLoader.IsSceneInMenu(scene.name);
                 sceneDataList.Add(sceneData);
@@ -200,12 +232,14 @@ namespace TsukatTool.Editor.SceneParameters
             }
 
             sceneData.TargetPlatformSettings.BuildTargets = new CustomBuildTarget[_targetPlatformSettings.BuildTargets.Length];
-            for (int index = 0; index < sceneData.TargetPlatformSettings.BuildTargets.Length; index++)
+            //for (int index = 0; index < sceneData.TargetPlatformSettings.BuildTargets.Length; index++)
+            for (int index = 0; index < _targetPlatformSettings.BuildTargets.Length; index++)
             {
                 CustomBuildTarget buildTarget = new CustomBuildTarget
                 {
                     Name = _targetPlatformSettings.BuildTargets[index].Name,
-                    IsSelected = false
+                    IsSelected = false,
+                    ScenePath = sceneData.Path
                 };
                 sceneData.TargetPlatformSettings.BuildTargets[index] = buildTarget;
             }
@@ -213,40 +247,12 @@ namespace TsukatTool.Editor.SceneParameters
             return sceneData;
         }
 
-        private CustomBuildTarget[] GetNewBuildTargets(SceneData sceneData)
-        {
-            List<CustomBuildTarget> newBuildTargets = new List<CustomBuildTarget>();
-            if (sceneData.TargetPlatformSettings.BuildTargets?.Length < 1)
-            {
-                sceneData = CreateNewSceneData(sceneData.Scene);
-            }
-            
-            foreach (CustomBuildTarget sceneBuildTarget in sceneData.TargetPlatformSettings.BuildTargets)
-            {
-                foreach (CustomBuildTarget settingsTargetPlatform in _targetPlatformSettings.BuildTargets)
-                {
-                    if (!sceneBuildTarget.Name.Equals(settingsTargetPlatform.Name))
-                    {
-                        continue;
-                    }
-
-                    settingsTargetPlatform.IsSelected = sceneBuildTarget.IsSelected;
-                    newBuildTargets.Add(settingsTargetPlatform);
-                }
-            }
-
-            return newBuildTargets.ToArray();
-        }
-
-        private SceneData GetSceneDataIfExist(Scene scene)
-        {
-            return _scenesSettings.ScenesData.FirstOrDefault(sceneData => sceneData.Path.Equals(scene.path));
-        }
+        private SceneData GetSceneDataIfExist(Scene scene) => _scenesSettings.ScenesData.First(sceneData => sceneData.Path.Equals(scene.path));
 
         private void OpenPrepareBuild()
         {
             EditorGUILayout.BeginVertical();
-            CreateButton(PrepareBuildButtonName, CustomSceneParametersWindow.OpenPrepareBuildWindow);
+            CreateButton(PrepareBuildButtonName, SceneParametersRunner.OpenPrepareBuildWindow);
             EditorGUILayout.EndVertical();
             EditorGUILayout.Separator();
         }

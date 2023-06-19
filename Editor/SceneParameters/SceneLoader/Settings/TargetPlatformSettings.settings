@@ -1,0 +1,9 @@
+{
+    "BuildTargets": [
+        {
+            "ScenePath": "",
+            "Name": "Android",
+            "IsSelected": true
+        }
+    ]
+}

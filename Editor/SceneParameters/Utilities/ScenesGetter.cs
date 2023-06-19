@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace TsukatTool.Editor
+namespace TsukatTool.Editor.SceneParameters.Utilities
 {
     public static class ScenesGetter
     {

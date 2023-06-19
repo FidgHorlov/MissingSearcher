@@ -1,13 +1,6 @@
-﻿#region Info
+﻿using System;
 
-// Tsukat tool - by Horlov Andrii (andreygorlovv@gmail.com)
-// Tsukat -> https://tsukat.com/
-
-#endregion
-
-using System;
-
-namespace TsukatTool.Editor.SceneParameters
+namespace TsukatTool.Editor.SceneParameters.Models
 {
     [Serializable]
     public class TargetPlatformSettings
@@ -18,6 +11,7 @@ namespace TsukatTool.Editor.SceneParameters
     [Serializable]
     public class CustomBuildTarget
     {
+        public string ScenePath;
         public string Name;
         public bool IsSelected;
     }

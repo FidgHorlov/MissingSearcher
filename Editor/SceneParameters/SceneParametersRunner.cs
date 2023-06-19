@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TsukatTool.Editor.SceneParameters
 {
-    public class CustomSceneParametersWindow : EditorWindow
+    public class SceneParametersRunner : EditorWindow
     {
         private const string SceneManagerPath = "Tsukat/Scene Parameters/Main window";
         private const string PrepareBuildPath = "Tsukat/Scene Parameters/Prepare build";
@@ -38,14 +38,14 @@ namespace TsukatTool.Editor.SceneParameters
         [MenuItem(SceneManagerPath, priority = -1000)]
         public static void OpenWindow()
         {
-            EditorWindow window = GetWindow<SceneManagerWindow>();
+            EditorWindow window = GetWindow<SceneParametersMainWindow>();
+            window.titleContent = new GUIContent(SceneManagerWindowName);
             if (focusedWindow.Equals(window))
             {
-                FocusWindowIfItsOpen<SceneManagerWindow>();
+                FocusWindowIfItsOpen<SceneParametersMainWindow>();
                 return;
             }
-            
-            window.titleContent = new GUIContent(SceneManagerWindowName);
+
             window.minSize = new Vector2(WindowSizeMinX, WindowSizeMinY);
             window.maxSize = new Vector2(WindowSizeMaxX, WindowSizeMaxY);
             window.position = new Rect(Screen.currentResolution.width / 2f, Screen.currentResolution.height / 2f, WindowSizeMinX, WindowSizeMinY);
@@ -55,13 +55,13 @@ namespace TsukatTool.Editor.SceneParameters
         public static void OpenPrepareBuildWindow()
         {
             EditorWindow window = GetWindow<PrepareBuildWindow>();
+            window.titleContent = new GUIContent(PrepareBuildWindowName);
             if (focusedWindow.Equals(window))
             {
                 FocusWindowIfItsOpen<PrepareBuildWindow>();
                 return;
             }
 
-            window.titleContent = new GUIContent(PrepareBuildWindowName);
             window.minSize = new Vector2(PrepareBuildWindowSizeMinX, PrepareBuildWindowSizeYMin);
             window.maxSize = new Vector2(PrepareBuildWindowSizeMaxX, PrepareBuildWindowSizeYMax);
             window.position = new Rect(Screen.currentResolution.width / 2f, Screen.currentResolution.height / 2f, PrepareBuildWindowSizeMinX, WindowSizeMinY);
@@ -71,14 +71,14 @@ namespace TsukatTool.Editor.SceneParameters
         [MenuItem(SceneManagerSettingsPath, priority = -909)]
         public static void OpenSettingsWindow()
         {
-            EditorWindow window = GetWindow<SettingsCustomSceneParametersWindow>();
+            EditorWindow window = GetWindow<SceneParametersSettingsWindow>();
+            window.titleContent = new GUIContent(SettingsWindowName);
             if (focusedWindow.Equals(window))
             {
-                FocusWindowIfItsOpen<SettingsCustomSceneParametersWindow>();
+                FocusWindowIfItsOpen<SceneParametersSettingsWindow>();
                 return;
             }
-            
-            window.titleContent = new GUIContent(SettingsWindowName);
+
             window.minSize = new Vector2(WindowSizeMinX, SettingsWindowSizeYMin);
             window.maxSize = new Vector2(WindowSizeMaxX, SettingsWindowSizeYMax);
             window.position = new Rect(Screen.currentResolution.width / 2f, Screen.currentResolution.height / 2f, WindowSizeMinX, SettingsWindowSizeYMin);

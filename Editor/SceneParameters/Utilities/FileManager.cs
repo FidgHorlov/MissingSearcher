@@ -6,11 +6,11 @@
 #endregion
 
 using System.IO;
-using TsukatTool.Editor.SceneParameters;
+using TsukatTool.Editor.SceneParameters.Models;
 using UnityEditor;
 using UnityEngine;
 
-namespace TsukatTool.Editor
+namespace TsukatTool.Editor.SceneParameters.Utilities
 {
     public static class FileManager
     {
