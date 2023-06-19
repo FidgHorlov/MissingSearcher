@@ -232,7 +232,6 @@ namespace TsukatTool.Editor.SceneParameters
             }
 
             sceneData.TargetPlatformSettings.BuildTargets = new CustomBuildTarget[_targetPlatformSettings.BuildTargets.Length];
-            //for (int index = 0; index < sceneData.TargetPlatformSettings.BuildTargets.Length; index++)
             for (int index = 0; index < _targetPlatformSettings.BuildTargets.Length; index++)
             {
                 CustomBuildTarget buildTarget = new CustomBuildTarget

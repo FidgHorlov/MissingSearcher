@@ -24,10 +24,9 @@ namespace TsukatTool.Editor.SceneParameters
 
     public class PrepareBuildWindow : EditorWindow
     {
-        private const string ButtonName = "Open Build Settings";
         private const string Header = "Here you can switch between platforms, and make final adjustment before go to the Build Settings";
-
-        private const string StandaloneWindows64 = "StandaloneWindows64";
+        private const string ButtonName = "Open Build Settings";
+        private const string Standalone64WarningMsg = "Unfortunately, we can't detect what is Standalone Windows and Windows 64, please select the proper scenes by yourself";
 
         private BuildTargetGroup _lastSelectedGroup;
         private string _lastSelectedStandaloneTarget;
@@ -125,7 +124,7 @@ namespace TsukatTool.Editor.SceneParameters
         private void ShowStandaloneMessage()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.HelpBox("Unfortunately, we can't detect what is Standalone Windows and Windows 64, please select the proper scenes by yourself.", MessageType.Warning);
+            EditorGUILayout.HelpBox(Standalone64WarningMsg, MessageType.Warning);
             EditorGUILayout.EndHorizontal();
         }
     }
