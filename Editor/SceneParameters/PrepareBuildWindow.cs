@@ -37,7 +37,7 @@ namespace TsukatTool.Editor.SceneParameters
             ScenesSettings scenesSettings = FileManager.LoadScenesSettings();
             if (scenesSettings == null)
             {
-                Debug.Log($"File with scenes settings is missing");
+                Debug.Log("File with scenes settings is missing");
                 return;
             }
 
@@ -83,20 +83,22 @@ namespace TsukatTool.Editor.SceneParameters
             EditorGUILayout.EndBuildTargetSelectionGrouping();
             _lastSelectedGroup = selectedGroup;
 
-            if (GUILayout.Button(ButtonName))
+            if (!GUILayout.Button(ButtonName))
             {
-                List<EditorBuildSettingsScene> settingsScenes = new List<EditorBuildSettingsScene>();
-                foreach (SelectedScene sceneData in _selectedScenes)
-                {
-                    if (sceneData.IsSelected)
-                    {
-                        settingsScenes.Add(new EditorBuildSettingsScene(sceneData.SceneData.Path, true));
-                    }
-                }
-
-                EditorBuildSettings.scenes = settingsScenes.ToArray();
-                GetWindow(typeof(BuildPlayerWindow));
+                return;
             }
+
+            List<EditorBuildSettingsScene> settingsScenes = new List<EditorBuildSettingsScene>();
+            foreach (SelectedScene sceneData in _selectedScenes)
+            {
+                if (sceneData.IsSelected)
+                {
+                    settingsScenes.Add(new EditorBuildSettingsScene(sceneData.SceneData.Path, true));
+                }
+            }
+
+            EditorBuildSettings.scenes = settingsScenes.ToArray();
+            GetWindow(typeof(BuildPlayerWindow));
         }
 
         private void GenerateToggleSelectedScenes(SceneData sceneData)

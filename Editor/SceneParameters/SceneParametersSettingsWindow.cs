@@ -20,16 +20,15 @@ namespace TsukatTool.Editor.SceneParameters
         private const string ButtonName = "Apply settings";
         private const string Header = "Select all build platform you will use";
         private const string HeaderNotSupportedPlatforms = "NOT SUPPORTED PLATFORMS:";
-
+        private const string ContextMenuUnsupportedPlatforms = " Unsupported Platforms";
         private const string SettingChangedPrefsName = "IsSettingChanged";
-        
+
         private TargetPlatformSettings _selectedBuildTargets;
         private List<CustomBuildTarget> _buildTargets;
-        private List<CustomBuildTarget> _buildTargetsNotSupported;
 
         private Vector2 _scrollPosition;
         private bool _inited;
-        private bool _lockNotSupportedPlatforms = true;
+        private bool _isNotSupportedPlatformsVisible = false;
 
         private void OnGUI()
         {
@@ -53,14 +52,25 @@ namespace TsukatTool.Editor.SceneParameters
 
             foreach (CustomBuildTarget buildTarget in _buildTargets)
             {
+                if (buildTarget.IsUnsupported)
+                {
+                    continue;
+                }
+
                 buildTarget.IsSelected = EditorGUILayout.ToggleLeft(buildTarget.Name, buildTarget.IsSelected);
             }
 
-            if (!_lockNotSupportedPlatforms)
+            if (_isNotSupportedPlatformsVisible)
             {
                 EditorGUILayout.LabelField(HeaderNotSupportedPlatforms);
-                foreach (CustomBuildTarget buildTarget in _buildTargetsNotSupported)
+
+                foreach (CustomBuildTarget buildTarget in _buildTargets)
                 {
+                    if (!buildTarget.IsUnsupported)
+                    {
+                        continue;
+                    }
+
                     buildTarget.IsSelected = EditorGUILayout.ToggleLeft(buildTarget.Name, buildTarget.IsSelected);
                 }
             }
@@ -75,7 +85,7 @@ namespace TsukatTool.Editor.SceneParameters
 
             _selectedBuildTargets = new TargetPlatformSettings
             {
-                BuildTargets = _buildTargets.FindAll(t => t.IsSelected).ToArray()
+                BuildTargets = GetSortedBuildTargets().ToArray()
             };
 
             FileManager.ReWriteTargetPlatforms(_selectedBuildTargets);
@@ -85,34 +95,31 @@ namespace TsukatTool.Editor.SceneParameters
 
         void IHasCustomMenu.AddItemsToMenu(GenericMenu menu)
         {
-            string nameOfContextMenu = _lockNotSupportedPlatforms ? "Unlock" : "Lock";
-            nameOfContextMenu += " Un Supported Platforms";
+            string nameOfContextMenu = _isNotSupportedPlatformsVisible ? "Hide" : "Show";
+            nameOfContextMenu += ContextMenuUnsupportedPlatforms;
 
-            GUIContent content = new GUIContent(nameOfContextMenu);
-            menu.AddItem(content, false, LockUnlock);
+            GUIContent unsupportedPlatformsVisibility = new GUIContent(nameOfContextMenu);
+            menu.AddItem(unsupportedPlatformsVisibility, false, LockUnlock);
+
+            GUIContent unselectAll = new GUIContent("Unselect all");
+            menu.AddItem(unselectAll, false, UnselectAll);
         }
 
         private void InitBuildDictionary()
         {
             _buildTargets = new List<CustomBuildTarget>();
-            _buildTargetsNotSupported = new List<CustomBuildTarget>();
 
             foreach (BuildTarget build in Enum.GetValues(typeof(BuildTarget)))
             {
                 CustomBuildTarget customBuildTarget = new CustomBuildTarget
                 {
-                    Name = build.ToString(), 
+                    Name = build.ToString(),
                     IsSelected = false,
-                    ScenePath = string.Empty
+                    ScenePath = string.Empty,
+                    IsUnsupported = !IsBuildTargetSupported(build)
                 };
-                if (IsBuildTargetSupported(build))
-                {
-                    _buildTargets.Add(customBuildTarget);
-                }
-                else
-                {
-                    _buildTargetsNotSupported.Add(customBuildTarget);
-                }
+
+                _buildTargets.Add(customBuildTarget);
             }
 
             _selectedBuildTargets = FileManager.LoadTargetPlatforms();
@@ -134,15 +141,17 @@ namespace TsukatTool.Editor.SceneParameters
 
             _buildTargets = new List<CustomBuildTarget>(_buildTargets.OrderByDescending(buildTarget => buildTarget.IsSelected).ToArray());
         }
-
-        private bool IsBuildTargetSupported(BuildTarget buildTarget)
+        
+        private void UnselectAll()
         {
-            return BuildPipeline.IsBuildTargetSupported(BuildTargetGroup.Unknown, buildTarget);
+            foreach (CustomBuildTarget buildTarget in _buildTargets)
+            {
+                buildTarget.IsSelected = false;
+            }
         }
 
-        private void LockUnlock()
-        {
-            _lockNotSupportedPlatforms = !_lockNotSupportedPlatforms;
-        }
+        private List<CustomBuildTarget> GetSortedBuildTargets() => _buildTargets.FindAll(buildTarget => buildTarget.IsSelected).ToList();
+        private bool IsBuildTargetSupported(BuildTarget buildTarget) => BuildPipeline.IsBuildTargetSupported(BuildTargetGroup.Unknown, buildTarget);
+        private void LockUnlock() => _isNotSupportedPlatformsVisible = !_isNotSupportedPlatformsVisible;
     }
 }

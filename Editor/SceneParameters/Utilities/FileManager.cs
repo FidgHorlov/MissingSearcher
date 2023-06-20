@@ -16,7 +16,7 @@ namespace TsukatTool.Editor.SceneParameters.Utilities
     {
         private const string GlobalTemplateMessage = "Can't find Global Template file\r\nPath: {0}";
         private const string MenuItemTemplateMessage = "Can't find MenuItem Template file\r\nPath: {0}";
-
+        
         public static TargetPlatformSettings LoadTargetPlatforms()
         {
             string json = LoadFromFile(FileManagerPath.GetPath(PathType.Settings));

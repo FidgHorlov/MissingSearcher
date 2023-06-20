@@ -14,5 +14,6 @@ namespace TsukatTool.Editor.SceneParameters.Models
         public string ScenePath;
         public string Name;
         public bool IsSelected;
+        public bool IsUnsupported;
     }
 }

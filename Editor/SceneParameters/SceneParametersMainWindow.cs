@@ -18,7 +18,8 @@ namespace TsukatTool.Editor.SceneParameters
 {
     public class SceneParametersMainWindow : EditorWindow
     {
-        private const string ScenesHeader = "Here you can select which scenes you want to see on the Menu tabs.\r\nAlso, if you have to build your project for differents platform you could manage it here.";
+        private const string ScenesHeader =
+            "Here you can select which scenes you want to see on the Menu tabs.\r\nAlso, if you have to build your project for differents platform you could manage it here.";
 
         private const string ApplySettingsButtonName = "Apply";
         private const string OpenSettingsButtonName = "Settings";
@@ -38,6 +39,7 @@ namespace TsukatTool.Editor.SceneParameters
         private bool _wasDictionaryInit;
         private bool _isSceneThings;
         private bool _isMoreDeepSceneEdit;
+        private bool _isUnsupportedPlatformsVisible;
 
         private void OnGUI()
         {
@@ -134,10 +136,19 @@ namespace TsukatTool.Editor.SceneParameters
                 EditorGUILayout.EndFoldoutHeaderGroup();
             }
 
+            if (IsUnsupportedPlatformSelected())
+            {
+                string prefix = _isUnsupportedPlatformsVisible ? "Hide" : "Show";
+                
+                if (GUILayout.Button(prefix + " unsupported platforms", EditorStyles.miniButton))
+                {
+                    _isUnsupportedPlatformsVisible = !_isUnsupportedPlatformsVisible;
+                }
+            }
+
             GUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
         }
-
 
         private void TargetBuildSelection(SceneData sceneData)
         {
@@ -155,11 +166,7 @@ namespace TsukatTool.Editor.SceneParameters
                     Debug.Log($"[{sceneData.Name}]. Build target {buildTarget.Name} not selected.");
                     continue;
                 }
-                
-                // todo: 
-                // probably we shouldn't delete from scene settings name of build. 
-                // here should be unique object of the scene settings
-                // with isSelected == false (if it's not selected)
+
                 CustomBuildTarget selectedTarget = GetBuildTarget(sceneData, buildTarget.Name);
                 if (selectedTarget == null)
                 {
@@ -173,6 +180,49 @@ namespace TsukatTool.Editor.SceneParameters
                 }
 
                 selectedTarget.IsSelected = EditorGUILayout.ToggleLeft(selectedTarget.Name, selectedTarget.IsSelected);
+            }
+            
+            if (_isUnsupportedPlatformsVisible)
+            {
+                ShowUnsupportedBuildTargets(sceneData);
+            }
+
+            EditorGUILayout.EndVertical();
+        }
+
+        private bool IsUnsupportedPlatformSelected() => _targetPlatformSettings.BuildTargets.Any(buildTarget => buildTarget.IsUnsupported && buildTarget.IsSelected);
+
+        private void ShowUnsupportedBuildTargets(SceneData sceneData)
+        {
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            if (!sceneData.IsBuildAdded)
+            {
+                return;
+            }
+            
+            EditorGUILayout.LabelField("Unsupported and selected", EditorStyles.boldLabel);
+
+            foreach (CustomBuildTarget customBuildTarget in _targetPlatformSettings.BuildTargets)
+            {
+                if (!customBuildTarget.IsSelected || !customBuildTarget.IsUnsupported)
+                {
+                    continue;
+                }
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(customBuildTarget.Name, EditorStyles.miniLabel);
+                if (GUILayout.Button("Add"))
+                {
+                    bool isParsed = Enum.TryParse(customBuildTarget.Name, out BuildTargetGroup buildTargetGroup);
+                    if (isParsed)
+                    {
+                        EditorUserBuildSettings.selectedBuildTargetGroup = buildTargetGroup;
+                    }
+
+                    GetWindow(typeof(BuildPlayerWindow));
+                }
+
+                EditorGUILayout.EndHorizontal();
             }
 
             EditorGUILayout.EndVertical();
@@ -246,8 +296,6 @@ namespace TsukatTool.Editor.SceneParameters
             return sceneData;
         }
 
-        private SceneData GetSceneDataIfExist(Scene scene) => _scenesSettings.ScenesData.First(sceneData => sceneData.Path.Equals(scene.path));
-
         private void OpenPrepareBuild()
         {
             EditorGUILayout.BeginVertical();
@@ -271,5 +319,7 @@ namespace TsukatTool.Editor.SceneParameters
             SceneLoader.SceneLoader.AddAllScenesToMenuBar(_scenesSettings.ScenesData);
             FileManager.ReWriteScenesSettings(_scenesSettings);
         }
+
+        private SceneData GetSceneDataIfExist(Scene scene) => _scenesSettings.ScenesData.First(sceneData => sceneData.Path.Equals(scene.path));
     }
 }
