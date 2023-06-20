@@ -16,6 +16,18 @@ using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace TsukatTool.Editor
 {
+    public static class MenuPriority
+    {
+        public const int AssetUsageDetector = 10000;
+
+#region Tsukat packages
+
+        public const int SceneParameters = 0;
+        public const int MissingElements = 1;
+
+#endregion
+    }
+
     public static class PackagesHub
     {
 #region Unity Menu Path
@@ -36,19 +48,19 @@ namespace TsukatTool.Editor
         private static ListRequest _installedPackages;
         private static AddRequest _newPackage;
 
-        [MenuItem(AssetUsageDetectorMenuPath, false, 10000)]
+        [MenuItem(AssetUsageDetectorMenuPath, false, MenuPriority.AssetUsageDetector)]
         private static void AddUsageDetector()
         {
             AddPackage(AssetUsageDetectorPackagePath);
         }
 
-        [MenuItem(MissingElementMenuPath, false)]
+        [MenuItem(MissingElementMenuPath, false, MenuPriority.MissingElements)]
         private static void AddMissingElement()
         {
             AddPackage(MissingElementPackagePath);
         }
-        
-        [MenuItem(SceneParametersMenuPath, false)]
+
+        [MenuItem(SceneParametersMenuPath, false, MenuPriority.SceneParameters)]
         private static void AddSceneParameters()
         {
             AddPackage(SceneParametersPackagePath);
@@ -60,7 +72,7 @@ namespace TsukatTool.Editor
             _newPackage = Client.Add(path);
             EditorApplication.update += Progress;
         }
-        
+
         private static async void InitInstalledPackages()
         {
             ListRequest pack = Client.List(offlineMode: false);
@@ -87,6 +99,7 @@ namespace TsukatTool.Editor
                     {
                         return;
                     }
+
                     EditorApplication.update += AddPackageProgress;
                     break;
                 }
@@ -111,7 +124,7 @@ namespace TsukatTool.Editor
             {
                 Debug.Log($"<b>{_newPackage.Result.name}</b> {PackageAlreadyInstalledMsg}");
             }
-            
+
             EditorApplication.update -= Progress;
             return foundPackageInfo != null;
         }
