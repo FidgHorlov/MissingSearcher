@@ -22,9 +22,9 @@ namespace TsukatTool.Editor.MissingElements
 			Materials
 		}
 
-		private const string MissingComponentPath = "Tsukat/Find.../Find Missing Components";
-		private const string MissingPrefabsPath = "Tsukat/Find.../Find Missing Prefabs";
-		private const string MissingMaterialsPath = "Tsukat/Find.../Find Missing Materials";
+		private const string MissingComponentPath = "Tsukat/Test/Missing Components";
+		private const string MissingPrefabsPath = "Tsukat/Test/Missing Prefabs";
+		private const string MissingMaterialsPath = "Tsukat/Test/Missing Materials";
 		
 		private const string MissingScriptFound = "Game object <b><color=green>{0}</color></b> has missing components on scene -> <b>{1}</b> !";
 		private const string MissingPrefabFound = "Missing prefab <b><color=green>{0}</color></b> was find on scene -> <b>{1}</b> !";
