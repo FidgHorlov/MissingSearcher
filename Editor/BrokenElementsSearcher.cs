@@ -1,6 +1,7 @@
 #region Info
 
-// Tsukat tool - by Horlov Andrii (andreygorlovv@gmail.com)
+// Tsukat tool - by Horlov Andrii (ahorlov@tsukat.com)
+//								  (andreygorlovv@gmail.com)
 // Tsukat -> https://tsukat.com/
 
 #endregion
@@ -11,9 +12,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TsukatTool.Editor.MissingElements
+namespace TsukatTool.Editor.BrokenElements
 {
-	public class MissingSearcher : MonoBehaviour
+	public class BrokenElementsSearcher : MonoBehaviour
 	{
 		private enum MissingType
 		{
@@ -22,36 +23,36 @@ namespace TsukatTool.Editor.MissingElements
 			Materials
 		}
 
-		private const string MissingComponentPath = "Tsukat/Test/Missing Components";
-		private const string MissingPrefabsPath = "Tsukat/Test/Missing Prefabs";
+		private const string BrokenComponents = "Tsukat/Test/Broken Components";
+		private const string BrokenPrefabs = "Tsukat/Test/Broken Prefabs";
 		private const string MissingMaterialsPath = "Tsukat/Test/Missing Materials";
 		
-		private const string MissingScriptFound = "Game object <b><color=green>{0}</color></b> has missing components on scene -> <b>{1}</b> !";
-		private const string MissingPrefabFound = "Missing prefab <b><color=green>{0}</color></b> was find on scene -> <b>{1}</b> !";
-		private const string MissingMaterialFound = "Missing material on mesh -> <b><color=green>{0}</color></b> was find on scene -> <b>{1}</b> !";
+		private const string MissingScriptFound = "Game object <b><color=green>{0}</color></b> has broken components in the scene -> <b>{1}</b> !";
+		private const string MissingPrefabFound = "Broken prefab <b><color=green>{0}</color></b> was found in the scene -> <b>{1}</b> !";
+		private const string MissingMaterialFound = "Missing material on mesh -> <b><color=green>{0}</color></b> was found in the scene -> <b>{1}</b> !";
 		private const string SearchingMaterialsStart = "<i><color=yellow>Searching of missing <b>Materials</b> has been started</color></i>";
-		private const string SearchingPrefabsStart = "<i><color=yellow>Searching of missing <b>Prefabs</b> has been started</color></i>";
-		private const string SearchingComponentsStart = "<i><color=yellow>Searching of missing <b>Components</b> has been started</color></i>";
+		private const string SearchingPrefabsStart = "<i><color=yellow>Searching of broken <b>Prefabs</b> has been started</color></i>";
+		private const string SearchingComponentsStart = "<i><color=yellow>Searching of broken <b>Components</b> has been started</color></i>";
 		private const string SearchingDone = "<i><color=yellow>Searching is done</color></i>";
 
 		private static ILogger Logger => Debug.unityLogger;
 
-		[MenuItem(MissingComponentPath)]
-		public static bool FindMissingComponents()
+		[MenuItem(BrokenComponents)]
+		public static bool FindBrokenComponentsMenu()
 		{
 			CustomLogger(SearchingComponentsStart);
 			return SearchMissingObjects(missingType: MissingType.Components);
 		}
 
-		[MenuItem(MissingPrefabsPath)]
-		public static bool FindMissingPrefabs()
+		[MenuItem(BrokenPrefabs)]
+		public static bool FindBrokenPrefabsMenu()
 		{
 			CustomLogger(SearchingPrefabsStart);
 			return SearchMissingObjects(missingType: MissingType.Prefabs);
 		}
 
 		[MenuItem(MissingMaterialsPath)]
-		public static bool FindMissingMaterials()
+		public static bool FindMissingMaterialsMenu()
 		{
 			CustomLogger(SearchingMaterialsStart);
 			return SearchMissingObjects(missingType: MissingType.Materials);
@@ -68,7 +69,7 @@ namespace TsukatTool.Editor.MissingElements
 					{
 						case MissingType.Components:
 						{
-							bool hasMissingComponents = FindMissingComponents(gameObject, scene);
+							bool hasMissingComponents = FindBrokenComponents(gameObject, scene);
 							if (hasMissingComponents && !hasMissing)
 							{
 								hasMissing = true;
@@ -78,7 +79,7 @@ namespace TsukatTool.Editor.MissingElements
 						}
 						case MissingType.Prefabs:
 						{
-							bool hasMissingComponents = FindMissingPrefabs(gameObject, scene);
+							bool hasMissingComponents = FindBrokenPrefabs(gameObject, scene);
 							if (hasMissingComponents && !hasMissing)
 							{
 								hasMissing = true;
@@ -106,7 +107,7 @@ namespace TsukatTool.Editor.MissingElements
 			return hasMissing;
 		}
 
-		private static bool FindMissingComponents(GameObject gameObject, Scene scene)
+		private static bool FindBrokenComponents(GameObject gameObject, Scene scene)
 		{
 			bool hasMissingScripts = GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(gameObject) > 0;
 			if (hasMissingScripts)
@@ -117,7 +118,7 @@ namespace TsukatTool.Editor.MissingElements
 			return hasMissingScripts;
 		}
 
-		private static bool FindMissingPrefabs(GameObject gameObject, Scene scene)
+		private static bool FindBrokenPrefabs(GameObject gameObject, Scene scene)
 		{
 			bool hasMissingPrefabs = PrefabUtility.IsPrefabAssetMissing(gameObject);
 			if (hasMissingPrefabs)

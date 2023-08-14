@@ -1,7 +1,7 @@
 {
-  "name": "com.tsukat.missingelements",
+  "name": "com.tsukat.brokenelements",
   "version": "0.0.1",
-  "displayName": "[tskt] Missing Elements",
+  "displayName": "[tskt] Broken Elements",
   "description": "The tool will find broken elements in your project. Such as: Game object with missing scripts or missing prefabs, meshes with missing materials.",
   "documentationUrl": "https://github.com/FidgHorlov/TsukatTool/wiki/Find...",
   "changelogUrl": "https://github.com/FidgHorlov/TsukatTool/releases",

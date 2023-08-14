@@ -1,16 +1,17 @@
-Hi there, my name is Andrii Horlov. I'm from TSUKAT. (www.tsukat.com)
+# Introduction 
+There is a base Custom Unity Package Template
+- [Package folder structure documentation](https://docs.unity3d.com/Manual/cus-samples.html)
+- [Package manifest documentation](https://docs.unity3d.com/Manual/upm-manifestPkg.html)
 
-Here you can see what our tools could make:
-This tool can help you to: 
+# How to add own package 
+- Create new branch **from master** for new Package
+- Change all names of folders and files
+- Add Package content
+- Edit Package.json
+- Edit Changelog.md
 
-1. Find missing objects in scenes.
-2. Work with scenes.
-3. By shortcuts add the Assets Detector Package
 
-
-
-If you have any questions please contact me:
-ahorlov@tsukat.com
-andreygorlovv@gmail.com
-
-<i> Copyright (c) 2023. Andrii Horlov </i>
+# Packages links for Unity Editor
+- Package Template: git+https://dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages
+- Service Locator: git+https://dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages#ServiceLocator
+- LiteNet Core + LiteNet Plugin  git+https://dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages#LiteNet
