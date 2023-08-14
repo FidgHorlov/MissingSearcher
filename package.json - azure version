@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "displayName": "[tskt] Broken Elements",
   "description": "The tool will find broken elements in your project. Such as: Game object with missing scripts or missing prefabs, meshes with missing materials.",
-  "documentationUrl": "https://github.com/FidgHorlov/TsukatTool/wiki/Find...",
-  "changelogUrl": "https://github.com/FidgHorlov/TsukatTool/releases",
-  "licensesUrl": "https://github.com/FidgHorlov/TsukatTool/blob/main/LICENCE.md",
+  "documentationUrl": "https://dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages?path=/Editor/Documentation~/TestBrokenElements.md&_a=preview",
+  "changelogUrl": "https://dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages?path=/CHANGELOG.md",
   "keywords": [
     "missing searcher",
     "missing prefab",

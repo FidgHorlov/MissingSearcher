@@ -1,6 +1,7 @@
 ﻿#region Info
 
-// Tsukat tool - by Horlov Andrii (andreygorlovv@gmail.com)
+// Tsukat tool - by Horlov Andrii (ahorlov@tsukat.com)
+//                                (andreygorlovv@gmail.com)
 // Tsukat -> https://tsukat.com/
 
 #endregion
