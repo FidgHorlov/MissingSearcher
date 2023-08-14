@@ -1,5 +1,5 @@
 {
-    "name": "tsukat.scene-parameters.Editor.amsdef",
+    "name": "tsukat.scene-parameters",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [
