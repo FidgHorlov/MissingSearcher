@@ -19,11 +19,14 @@ namespace TsukatTool.Editor
     public static class MenuPriority
     {
         public const int AssetUsageDetector = 10000;
+        public const int DoTween = 10001;
 
 #region Tsukat packages
-
-        public const int SceneParameters = 0;
-        public const int MissingElements = 1;
+        // internal use
+        // public const int ServiceLocator = 0;
+        // public const int LiteNet = 1;
+        public const int SceneParameters = 2;
+        public const int BrokenElements = 3;
 
 #endregion
     }
@@ -33,13 +36,25 @@ namespace TsukatTool.Editor
 #region Unity Menu Path
 
         private const string AssetUsageDetectorMenuPath = "Tsukat/Add.../Asset Usage Detector";
-        private const string MissingElementMenuPath = "Tsukat/Add.../Missing Elements";
+        private const string DoTweenMenuPath = "Tsukat/Add.../DoTween";
+
+        private const string ServiceLocatorMenuPath = "Tsukat/Add.../Service Locator";
+        private const string LiteNetMenuPath = "Tsukat/Add.../Lite Net";
         private const string SceneParametersMenuPath = "Tsukat/Add.../Scene Parameters";
+        private const string BrokenElementMenuPath = "Tsukat/Add.../Broken Elements";
 
 #endregion
 
         private const string AssetUsageDetectorPackagePath = "https://github.com/yasirkula/UnityAssetUsageDetector.git";
-        private const string MissingElementPackagePath = "https://github.com/FidgHorlov/SeparateTools.git#missingElements";
+        private const string DoTweenPackagePath = "https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676";
+        
+		// internal use
+        // private const string ServiceLocatorPackagePath = "git+https://tsukat-studio@dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages#ServiceLocator";
+        // private const string LiteNetPackagePath = "git+https://tsukat-studio@dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages#LiteNet";
+        // private const string BrokenElementPackagePath = "git+https://tsukat-studio@dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages#TestBrokenElements";
+        // private const string SceneParametersPackagePath = "git+https://tsukat-studio@dev.azure.com/tsukat-studio/TSUKAT%20Development/_git/TsukatUnityPackages#SceneParameters";
+        
+        private const string BrokenElementPackagePath = "https://github.com/FidgHorlov/SeparateTools.git#missingElements";
         private const string SceneParametersPackagePath = "https://github.com/FidgHorlov/SeparateTools.git#sceneParameters";
 
         private const string PackageInstalledMsg = "Package installed!";
@@ -53,11 +68,30 @@ namespace TsukatTool.Editor
         {
             AddPackage(AssetUsageDetectorPackagePath);
         }
-
-        [MenuItem(MissingElementMenuPath, false, MenuPriority.MissingElements)]
-        private static void AddMissingElement()
+        
+        [MenuItem(DoTweenMenuPath, false, MenuPriority.DoTween)]
+        private static void AddDoTween()
         {
-            AddPackage(MissingElementPackagePath);
+            Application.OpenURL(DoTweenPackagePath);
+        }
+
+		// internal use
+        // [MenuItem(ServiceLocatorMenuPath, false, MenuPriority.ServiceLocator)]
+        // private static void AddServiceLocator()
+        // {
+        //     AddPackage(ServiceLocatorPackagePath);
+        // }
+        //
+        // [MenuItem(LiteNetMenuPath, false, MenuPriority.LiteNet)]
+        // private static void AddLiteNet()
+        // {
+        //     AddPackage(LiteNetPackagePath);
+        // }
+        
+        [MenuItem(BrokenElementMenuPath, false, MenuPriority.BrokenElements)]
+        private static void AddBrokenElements()
+        {
+            AddPackage(BrokenElementPackagePath);
         }
 
         [MenuItem(SceneParametersMenuPath, false, MenuPriority.SceneParameters)]
