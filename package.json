@@ -1,7 +1,7 @@
 {
-  "name": "com.tsukat.hub",
+  "name": "tsukat.hub",
   "displayName": "[tskt] Tsukat Hub",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Tsukat Hub - gives you easy access to our custom packages and to the other useful packages.",
   "keywords": [
     "Tsukat",
@@ -9,8 +9,8 @@
     "Hub"
   ],
   "author": {
-    "name": "TSUKAT",
-    "email": "tsukatdev@tsukat.com",
+    "name": "Andrii Horlov",
+    "email": "ahorlov@tsukat.com",
     "url": "https://www.tsukat.com"
   },
   "homepage": "https://tsukat.com",
