@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Logger.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -63,9 +64,17 @@ namespace Logger.Editor
             ShowLogsPath();
         }
 
+        /// <summary>
+        /// Show path to logs
+        /// </summary>
         private void ShowLogsPath()
         {
-            _logSettings.LogFolderPath = Constants.FolderPath;
+            if (!Directory.Exists(_logSettings.LogFolderPath))
+            {
+                return;
+            }
+            
+            _logSettings.LogFolderPath = LogPaths.FolderPath;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("Logs folder", EditorStyles.boldLabel);
             GUILayout.TextArea(_logSettings.LogFolderPath, EditorStyles.miniLabel);
@@ -76,6 +85,9 @@ namespace Logger.Editor
             EditorGUILayout.EndVertical();
         }
 
+        /// <summary>
+        /// Delete button logic
+        /// </summary>
         private void DeleteButtonPressed()
         {
             if (GUILayout.Button("Delete logs"))
@@ -84,14 +96,20 @@ namespace Logger.Editor
             }
         }
 
+        /// <summary>
+        /// Save button logic
+        /// </summary>
         private void SaveButtonPressed()
         {
             if (GUILayout.Button("Save"))
             {
-                SaveSettings();
+                FileManager.SaveSettings(_logSettings);
             }
         }
 
+        /// <summary>
+        /// Max log files field
+        /// </summary>
         private void CountLogFiles()
         {
             EditorGUILayout.Separator();
@@ -100,11 +118,9 @@ namespace Logger.Editor
             EditorGUILayout.LabelField("Write -1, if you want to keep all files", EditorStyles.miniLabel);
         }
 
-        private void SaveSettings()
-        {
-            FileManager.SaveSettings(_logSettings);
-        }
-
+        /// <summary>
+        /// Log File type field
+        /// </summary>
         private void LogFileWriting()
         {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -114,6 +130,10 @@ namespace Logger.Editor
             EditorGUILayout.EndVertical();
         }
 
+        /// <summary>
+        /// Log capacity field
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         private void LogCapacityGui()
         {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);

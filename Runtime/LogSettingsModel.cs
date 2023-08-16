@@ -2,6 +2,13 @@
 
 namespace Logger
 {
+    public enum LogFileType
+    {
+        OneBigFile,
+        OneFile,
+        SeparateFiles
+    }
+
     [Serializable]
     public class LogSettingsModel
     {
@@ -10,12 +17,5 @@ namespace Logger
         public bool IsFullLogs;
         public int MaxLogFiles;
         public string LogFolderPath;
-    }
-    
-    public enum LogFileType
-    {
-        OneBigFile,
-        OneFile,
-        SeparateFiles
     }
 }
