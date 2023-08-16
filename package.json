@@ -1,18 +1,18 @@
 {
-  "name": "com.tsukat.*YourName*",
+  "name": "tsukat.logger",
+  "displayName": "[tskt] Logger",
   "version": "0.0.1",
-  "displayName": "[tskt] *YourName*",
-  "description": "DescriptionDescriptionDescriptionDescription",
-  "documentationUrl": "https://github.com/FidgHorlov/TsukatTool/wiki/Find...",
-  "changelogUrl": "https://github.com/FidgHorlov/TsukatTool/releases",
-  "licensesUrl": "https://github.com/FidgHorlov/TsukatTool/blob/main/LICENCE.md",
+  "description": "Logger - helps you to save logs to file.",
   "keywords": [
-    "keyword1",
-    "keyword2"
+    "Tsukat",
+    "Custom Packages",
+    "Logger"
   ],
   "author": {
-    "name": "Tsukat",
-    "email": "tsukatdev@tsukat.com",
+    "name": "Andrii Horlov",
+    "email": "ahorlov@tsukat.com",
     "url": "https://www.tsukat.com"
-  }
+  },
+  "homepage": "https://tsukat.com",
+  "documentationUrl": "https://tsukat.com"
 }
