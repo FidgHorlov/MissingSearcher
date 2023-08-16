@@ -85,9 +85,9 @@ namespace Logger.Utilities
             {
                 IsLogActive = false,
                 IsFullLogs = false,
-                LogFileType = LogFileType.OneFile, 
+                LogFileType = LogFileType.OneFile,
                 MaxLogFiles = -1,
-                LogFolderPath =  Constants.FolderPath
+                LogFolderPath = Constants.FolderPath
             };
 
             return logSettingsModel;
@@ -118,7 +118,9 @@ namespace Logger.Utilities
             StreamWriter streamWriter = new StreamWriter(pathFile);
             streamWriter.Write(jsonData);
             streamWriter.Close();
+#if UNITY_EDITOR
             AssetDatabase.Refresh();
+#endif
             Debug.Log($"Logger settings saved!");
         }
 
@@ -141,10 +143,23 @@ namespace Logger.Utilities
 
         private static string GetSettingsFileFolder()
         {
+#if UNITY_EDITOR
+            return GetSettingsFileFolderUnity();
+#endif
+            return GetSettingsFileFolderBuild();
+        }
+
+        private static string GetSettingsFileFolderUnity()
+        {
             string[] fileGui = AssetDatabase.FindAssets($"t:Script {nameof(FileManager)}");
             string path = AssetDatabase.GUIDToAssetPath(fileGui[0]);
             path = Directory.GetParent(path)?.ToString();
             return Path.GetDirectoryName(path);
+        }
+
+        private static string GetSettingsFileFolderBuild()
+        {
+            return Application.persistentDataPath;
         }
     }
 }
