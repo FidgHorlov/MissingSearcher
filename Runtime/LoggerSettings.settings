@@ -1,7 +1,7 @@
 {
     "LogFileType": 0,
-    "IsLogActive": true,
+    "IsLogActive": false,
     "IsFullLogs": false,
-    "MaxLogFiles": 3,
-    "LogFolderPath": "C:/Users/ahorl/AppData/LocalLow/DefaultCompany/EmptyProject\\Logs"
+    "MaxLogFiles": -1,
+    "LogFolderPath": ""
 }
