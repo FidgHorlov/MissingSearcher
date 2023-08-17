@@ -8,7 +8,7 @@ namespace Logger.Utilities
 {
     public static class FileManager
     {
-        private const string SettingsPath = "/Resources/LoggerSettings.txt";
+        private const string SettingsPath = "/Resources/LoggerSettings.json";
         private const string FileName = "LoggerSettings";
 
         /// <summary>
@@ -32,25 +32,17 @@ namespace Logger.Utilities
         /// </summary>
         /// <param name="folderPath">Path for folder (can be null)</param>
         /// <returns>True - if folder already exist. That means, maybe there duplicate of files.</returns>
-        public static bool CreateFolderIfNeeded(string folderPath)
+        public static void CreateFolderIfNeeded(string folderPath)
         {
-            Debug.Log($"Trying to create folder -> {folderPath}");
             if (string.IsNullOrEmpty(folderPath))
             {
-                return false;
+                return;
             }
 
             if (!Directory.Exists(folderPath))
             {
-                Debug.Log($"Trying to create folder. -> {folderPath}");
                 Directory.CreateDirectory(folderPath);
             }
-            else
-            {
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -76,6 +68,11 @@ namespace Logger.Utilities
                 }
             }
 
+            if (filesPaths.Length < 1)
+            {
+                return;
+            }
+            
             filesPaths = filesPaths.OrderByDescending(file => file.CreationTimeUtc).ToArray();
             await Task.Run(() => DeleteFile(filesPaths[^1].FullName));
         }
@@ -99,10 +96,18 @@ namespace Logger.Utilities
         /// <param name="message">Target message</param>
         public static void AddTextToFile(string filePath, string message)
         {
-            if (!string.IsNullOrEmpty(filePath))
+            if (string.IsNullOrEmpty(filePath))
             {
-                File.AppendAllText(filePath, message);
+                return;
             }
+
+            if (!File.Exists(filePath))
+            {
+                ReWriteFile(filePath, message);
+                return;
+            }
+            
+            File.AppendAllText(filePath, message);
         }
 
         /// <summary>
@@ -117,7 +122,7 @@ namespace Logger.Utilities
                 IsFullLogs = false,
                 LogFileType = LogFileType.OneFile,
                 MaxLogFiles = -1,
-                LogFolderPath = LogPaths.FolderPath
+                LogFolderName = LogPaths.LogFolder
             };
 
             return logSettingsModel;
@@ -161,7 +166,6 @@ namespace Logger.Utilities
 #if UNITY_EDITOR
             AssetDatabase.Refresh();
 #endif
-            Debug.Log($"Logger settings saved!\r\n{pathFile}");
         }
 
         /// <summary>

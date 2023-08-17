@@ -5,7 +5,7 @@ using UnityEngine.Scripting;
 
 namespace Logger
 {
-    public static class LoggerRunner 
+    public static class LoggerRunner
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Init()

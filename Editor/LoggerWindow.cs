@@ -69,18 +69,24 @@ namespace Logger.Editor
         /// </summary>
         private void ShowLogsPath()
         {
-            if (!Directory.Exists(_logSettings.LogFolderPath))
+            if (string.IsNullOrEmpty(_logSettings.LogFolderName))
+            {
+                _logSettings.LogFolderName = LogPaths.LogFolder;
+                return;
+            }
+
+            string folderPath = LogPaths.GetFolderPath(_logSettings.LogFolderName);
+            if (!Directory.Exists(folderPath))
             {
                 return;
             }
             
-            _logSettings.LogFolderPath = LogPaths.FolderPath;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("Logs folder", EditorStyles.boldLabel);
-            GUILayout.TextArea(_logSettings.LogFolderPath, EditorStyles.miniLabel);
+            GUILayout.TextArea(folderPath, EditorStyles.miniLabel);
             if (GUILayout.Button("Open folder"))
             {
-                Application.OpenURL(_logSettings.LogFolderPath);
+                Application.OpenURL(folderPath);
             }
             EditorGUILayout.EndVertical();
         }
@@ -92,7 +98,7 @@ namespace Logger.Editor
         {
             if (GUILayout.Button("Delete logs"))
             {
-                FileManager.DeleteFiles(_logSettings.LogFolderPath, LogsSearchPattern);
+                FileManager.DeleteFiles(LogPaths.GetFolderPath(_logSettings.LogFolderName), LogsSearchPattern);
             }
         }
 
@@ -104,6 +110,7 @@ namespace Logger.Editor
             if (GUILayout.Button("Save"))
             {
                 FileManager.SaveSettings(_logSettings);
+                Debug.Log($"Logger settings saved!\r\n{LogPaths.GetFolderPath(_logSettings.LogFolderName)}");
             }
         }
 

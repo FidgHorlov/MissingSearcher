@@ -16,6 +16,6 @@ namespace Logger
         public bool IsLogActive;
         public bool IsFullLogs;
         public int MaxLogFiles;
-        public string LogFolderPath;
+        public string LogFolderName;
     }
 }

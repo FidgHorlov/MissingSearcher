@@ -18,7 +18,18 @@ namespace Logger
 
         static Log()
         {
+            if (_wasInit)
+            {
+                return;
+            }
+            
             LOGSettings = FileManager.LoadSettings();
+            if (LOGSettings.IsLogActive)
+            {
+                CreateLogFile();
+            }
+
+            _wasInit = true;
             Application.logMessageReceivedThreaded += OnLogMessageReceived;
         }
 
@@ -27,19 +38,12 @@ namespace Logger
             Application.logMessageReceivedThreaded -= OnLogMessageReceived;
         }
 
+        /// <summary>
+        /// Logger init.
+        /// All start actions in Constructor.
+        /// </summary>
         internal static void LoggerInit()
         {
-            if (_wasInit)
-            {
-                return;
-            }
-
-            if (LOGSettings.IsLogActive)
-            {
-                CreateLogFile();
-            }
-
-            _wasInit = true;
         }
 
         /// <summary>
@@ -76,23 +80,24 @@ namespace Logger
         /// </summary>
         private static void CreateLogFile()
         {
+            FileManager.CreateFolderIfNeeded(GetFolderPath());
             _filePath = GetFilePath();
-            if (FileManager.CreateFolderIfNeeded(LogPaths.FolderPath))
-            {
-                DeleteLogsIfMore();
-            }
-
-            if (LOGSettings.LogFileType == LogFileType.OneBigFile)
-            {
-                WriteToFile(BigLogSeparator);
-            }
-            else
-            {
-                FileManager.DeleteFile(_filePath);
-            }
-
             Debug.Log($"Exporting Log File to {_filePath}");
-            LOGSettings.LogFolderPath = LogPaths.FolderPath;
+            switch (LOGSettings.LogFileType)
+            {
+                case LogFileType.OneBigFile:
+                    if (!File.Exists(_filePath))
+                    {
+                        FileManager.AddTextToFile(_filePath, BigLogStartWarning);
+                    }
+                    WriteToFile(BigLogSeparator);
+                    return;
+                case LogFileType.SeparateFiles:
+                    DeleteLogsIfMore();
+                    break;
+            }
+
+            FileManager.DeleteFile(_filePath); // delete file in case of duplicate
         }
 
         /// <summary>
@@ -105,7 +110,7 @@ namespace Logger
                 return;
             }
 
-            FileManager.DeleteFiles(LogPaths.FolderPath, LogPaths.LogSearchPattern, LOGSettings.MaxLogFiles);
+            FileManager.DeleteFiles(GetFolderPath(), LogPaths.LogSearchPattern, LOGSettings.MaxLogFiles);
         }
 
         /// <summary>
@@ -114,7 +119,7 @@ namespace Logger
         /// <returns>If LogType is Separate - name will be with date.<br/>Otherwise name will be default</returns>
         private static string GetFilePath()
         {
-            return Path.Combine(LogPaths.FolderPath, LOGSettings.LogFileType == LogFileType.SeparateFiles
+            return Path.Combine(GetFolderPath(), LOGSettings.LogFileType == LogFileType.SeparateFiles
                 ? string.Format(LogPaths.MultipleLogsFileName, DateTime.Now.ToString(LogPaths.DateTimeFormat))
                 : LogPaths.OneLogFileName);
         }
@@ -134,11 +139,19 @@ namespace Logger
             {
                 FileManager.AddTextToFile(_filePath, BigLogStartWarning);
             }
+            
+            FileManager.AddTextToFile(_filePath, message);
+        }
 
-            if (!string.IsNullOrEmpty(_filePath))
-            {
-                FileManager.AddTextToFile(_filePath, message);
-            }
+        /// <summary>
+        /// Return Folder path depends on the settings
+        /// </summary>
+        /// <returns>Default path or path from settings</returns>
+        private static string GetFolderPath()
+        {
+            string folderName = string.IsNullOrEmpty(LOGSettings.LogFolderName) ? LogPaths.LogFolder : LOGSettings.LogFolderName;
+            return LogPaths.GetFolderPath(folderName);
+            ;
         }
     }
 }
