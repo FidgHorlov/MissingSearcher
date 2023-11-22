@@ -105,7 +105,6 @@ Here you can see all scenes which were selected by you in the `Scene Manager`. A
 After you press `Open Build Settings` you will see the Unity default window with all selected scenes (from the `Prepare window`).
 
 If you have any questions please contact me:
-ahorlov@tsukat.com
 andreygorlovv@gmail.com
 
 <i> Copyright (c) 2023. Andrii Horlov </i>
