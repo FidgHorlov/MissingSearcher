@@ -3,13 +3,13 @@ Those tools have been made for [Tsukat](www.tsukat.com), to simplify some work r
 Below, you can read about each of the tools.
 
 List of tools:
-1. Find missing objects in scenes.
-<br> `https://github.com/FidgHorlov/SeparateTools.git#missingElements` </br>
-2. Scene parameters
+1. Find missing objects in scenes. ([info](https://github.com/FidgHorlov/SeparateTools/tree/main#find-missing-objects))
+<br> `https://github.com/FidgHorlov/SeparateTools.git#missingElements` </br> 
+2. Scene parameters ([url](https://github.com/FidgHorlov/SeparateTools/tree/main#scene-parameters))
 <br> `https://github.com/FidgHorlov/SeparateTools.git#sceneParameters` </br>
-3. Shortcuts to add some useful tools
+3. Shortcuts to add some useful tools ([info](https://github.com/FidgHorlov/SeparateTools/tree/main#package-hub))
 <br> `https://github.com/FidgHorlov/SeparateTools.git#tsukatHub` </br>
-4. Log to file
+4. Log to file ([info](https://github.com/FidgHorlov/SeparateTools/tree/main#logger))
 <br> `https://github.com/FidgHorlov/SeparateTools.git#logger` </br>
 
 ---
