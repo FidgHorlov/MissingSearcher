@@ -2,6 +2,8 @@ Hi there, my name is Andrii Horlov. <br></br>
 Those tools have been made for [Tsukat](www.tsukat.com), to simplify some work routines.
 Below, you can read about each of the tools.
 
+## The toolset is already available on the [AssetStore](https://assetstore.unity.com/publishers/94841)
+
 List of tools:
 1. Find missing objects in scenes. ([info](https://github.com/FidgHorlov/SeparateTools/tree/main#find-missing-objects))
 <br> `https://github.com/FidgHorlov/SeparateTools.git#missingElements` </br> 
